@@ -2,11 +2,18 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Réservation louvre - {% block title %}{% endblock %}</title>
+        <title>
+            Réservation louvre - {% block title %}{% endblock %}
+        </title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        {% include "partials/header.html.twig" %}
         {% block body %}{% endblock %}
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
