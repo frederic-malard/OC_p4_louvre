@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Reservation
 {
@@ -49,6 +52,18 @@ class Reservation
      * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="reservations")
      */
     private $persons;
+
+    /**
+     * prepare slug before persist or update. Not 100% sure it's unique (but almost) I would use id instead of mail, but can't access id before it's flushed. Would like to flush, then in PostPersist and PostUpdate, get id, modify slug, then persist and flush again, but symfony is made so we can't use a manager in an entity method. I choosed to replace id with mail, this way even if it's not 100% sure unique, it's less abstract for user.
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function prepare()
+    {
+        if (empty($this->slug))
+            $this->slug = (new Slugify())->slugify($this->mail . ' ' . $this->random);
+    }
 
     public function __construct()
     {
