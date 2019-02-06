@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -20,11 +22,6 @@ class Reservation
 
     /**
      * @ORM\Column(type="string", length=255)
-     * 
-     * @Assert\Email(
-     *      message = "invalid email"
-     *      strict = true
-     * )
      */
     private $mail;
 
@@ -47,6 +44,16 @@ class Reservation
      * @ORM\Column(type="string", length=255)
      */
     private $random;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="reservations")
+     */
+    private $persons;
+
+    public function __construct()
+    {
+        $this->persons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,6 +119,32 @@ class Reservation
     public function setRandom(string $random): self
     {
         $this->random = $random;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Person[]
+     */
+    public function getPersons(): Collection
+    {
+        return $this->persons;
+    }
+
+    public function addPerson(Person $person): self
+    {
+        if (!$this->persons->contains($person)) {
+            $this->persons[] = $person;
+        }
+
+        return $this;
+    }
+
+    public function removePerson(Person $person): self
+    {
+        if ($this->persons->contains($person)) {
+            $this->persons->removeElement($person);
+        }
 
         return $this;
     }
