@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}réserver ou consulter{% endblock %}
+
+{% block body %}
+
+<h1 class="h3 mb-5">
+    Que souhaitez vous faire ?
+</h1>
+<div class="row">
+    <div class="col text-center">
+        <form action="{{ path('booking_filling_form') }}" method="post">
+            <input type="hidden" name="mail", value="{{ mail }}">
+            <input type="submit" value="Nouvelle réservation" class="btn btn-primary">
+        </form>
+    </div>
+    <div class="col text-center">
+        <form action="{{ path('checking_index') }}" method="post">
+            <input type="hidden" name="mail", value="{{ mail }}">
+            <input type="submit" value="Consulter les précédentes réservations" class="btn btn-primary">
+        </form>
+    </div>
+</div>
+
+{% endblock %}
