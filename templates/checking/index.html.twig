@@ -4,6 +4,33 @@
 
 {% block body %}
 
-
+{% for reservation in reservations %}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h4 text-center">
+                {{ reservation.stringVisitDay() }} - 
+                {% if reservation.halfDay %}
+                    demi-journée
+                {% else %}
+                    journée entière
+                {% endif %}
+            </h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for person in reservation.persons %}
+                    <div class="col">
+                        {{ person.firstname }} {{ person.name }}
+                    </div>
+                {% endfor %}
+            </div>
+            <p class="text-center mt-4">
+                <a href="{{ path('checking_show', {'slug' : reservation.slug}) }}" class="btn btn-primary">
+                    Plus d'infos
+                </a>
+            </p>
+        </div>
+    </div>
+{% endfor %}
 
 {% endblock %}

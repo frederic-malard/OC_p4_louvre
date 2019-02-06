@@ -95,6 +95,11 @@ class Reservation
         return $this->visitDay;
     }
 
+    public function stringVisitDay(): ?string
+    {
+        return $this->visitDay->format('d/m/Y');
+    }
+
     public function setVisitDay(\DateTimeInterface $visitDay): self
     {
         $this->visitDay = $visitDay;
