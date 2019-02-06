@@ -4,6 +4,66 @@
 
 {% block body %}
 
-
+<h1 class="h3 text-center mb-5">
+    visite du {{ reservation.stringVisitDay() }} - 
+    {% if reservation.halfDay %}
+        demi-journée
+    {% else %}
+        journée entière
+    {% endif %}
+</h1>
+<p>
+    mail utilisé : {{ reservation.mail }}
+</p>
+<p class="mb-4">
+    code de réservation : {{ reservation.getBookingCode() }}
+</p>
+{% for person in reservation.persons %}
+    <h2 class="mt-5 h4">
+        {{ person.firstName }} {{ person.name }}
+    </h2>
+    <table class="table table-primary" style="caption-side:top;!important">
+        <tr>
+            <th scope="row" style="width:50%">
+                pays
+            </th>
+            <td>
+                {{ person.country }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" style="width:50%">
+                date de naissance
+            </th>
+            <td>
+                {{ person.stringBirthDate() }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" style="width:50%">
+                réduction
+            </th>
+            <td>
+                {% if person.discount %}
+                    oui (un justificatif devra être présenté)
+                {% else %}
+                    non
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" style="width:50%">
+                prix du billet
+            </th>
+            <td>
+                {% if reservation.halfDay %}
+                    {{ person.priceHalfDay() }}
+                {% else %}
+                    {{ person.priceFullDay() }}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+{% endfor %}
 
 {% endblock %}

@@ -99,6 +99,11 @@ class Person
         return $this->birthDate;
     }
 
+    public function stringBirthDate(): ?string
+    {
+        return $this->birthDate->format('d/m/Y');
+    }
+
     public function setBirthDate(\DateTimeInterface $birthDate): self
     {
         $this->birthDate = $birthDate;
@@ -144,5 +149,30 @@ class Person
         }
 
         return $this;
+    }
+
+    private function age()
+    {
+        return $this->birthDate->diff(new \DateTime())->format('%Y');
+    }
+
+    public function priceFullDay()
+    {
+        $age = $this->age();
+        if ($age < 4)
+            return 0;
+        elseif ($age < 12)
+            return 8;
+        elseif ($this->discount)
+            return 10;
+        elseif ($age >= 60)
+            return 12;
+        else
+            return 16;
+    }
+
+    public function priceHalfDay()
+    {
+        return $this->priceFullDay() / 2;
     }
 }

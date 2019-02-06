@@ -168,4 +168,9 @@ class Reservation
 
         return $this;
     }
+
+    public function getBookingCode()
+    {
+        return $this->id . '*' . $this->random;
+    }
 }
