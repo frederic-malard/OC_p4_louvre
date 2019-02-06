@@ -4,8 +4,14 @@
 
 {% block body %}
 
-<p>
-    test
+<h1 class="h3 mb-3">
+    Votre e-mail
+</h1>
+{# créer un formulaire symfony ? Problème : à quelle entité le lier ? Réservation ? Si oui, Comment gérer sachant qu'il faut récupérer toutes les personnes liées à toutes les réservations qui contiennent le mail, et qu'il faut, mémoriser le mail, qui n'est qu'une part des infos des réservations ? Sinon : créer formulaire php, et garder formulaire symfony pour la suite ? Peut être plutôt ça en effet. #}
+
+{# transformer en simple bulle d'info si le visiteur clique sur un petit "i" ? #}
+<p class="alert alert-info mt-5">
+    Pourquoi demander votre e-mail ? Afin de préremplir vos nouvelles réservations et de retrouver vos précédentes si elles existent, ou de préparer votre première réservation dans le cas contraire, merci d'entrer votre mail.
 </p>
 
 {% endblock %}

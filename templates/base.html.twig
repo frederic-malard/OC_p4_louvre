@@ -10,7 +10,11 @@
     </head>
     <body>
         {% include "partials/header.html.twig" %}
-        {% block body %}{% endblock %}
+
+        <div class="container jumbotron">
+            {% block body %}{% endblock %}
+        </div>
+
         <script src="/js/jquery.min.js"></script>
         <script src="/js/popper.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
