@@ -2,8 +2,56 @@
 
 {% block title %}nouvelle réservation{% endblock %}
 
+{% form_theme form _self %}
+
 {% block body %}
 
+    <h1 class="h3 mb-5 text-center">
+        Nouvelle réservation
+    </h1>
 
+    {{ form_start(form) }}
+
+    {{ form_widget(form) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block _reservation_persons_row %}
+
+    {{ form_widget(form) }}
+
+{% endblock %}
+
+{% block _reservation_persons_widget %}
+
+<hr class="my-5">
+
+    <h2 class="h4 mb-3 text-center">
+        Visiteurs
+    </h2>
+
+    {{ form_widget(form) }}
+
+    <div class="form-group mb-5">
+        <button type="button" id="addPerson" class="btn btn-primary mt-4">
+            Ajoutez un visiteur
+        </button>
+    </div>
+
+{% endblock %}
+
+{% block _reservation_persons_entry_row %}
+
+    {{ form_widget(form) }}
+
+    <hr class="my-5">
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="/js/addPerson.js"></script>
 
 {% endblock %}

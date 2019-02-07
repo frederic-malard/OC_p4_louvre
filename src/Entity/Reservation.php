@@ -61,6 +61,11 @@ class Reservation
      */
     public function prepare()
     {
+        if (empty($this->random))
+        {
+            $random = 'azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890';
+            $this->random = substr(str_shuffle($random), 0, 20);
+        }
         if (empty($this->slug))
             $this->slug = (new Slugify())->slugify($this->mail . ' ' . $this->random);
     }
@@ -102,7 +107,10 @@ class Reservation
 
     public function setVisitDay(\DateTimeInterface $visitDay): self
     {
-        $this->visitDay = $visitDay;
+        if ($visitDay >= new \DateTime())
+            $this->visitDay = $visitDay;
+        else
+            throw new \Exception('date de visite passée');
 
         return $this;
     }

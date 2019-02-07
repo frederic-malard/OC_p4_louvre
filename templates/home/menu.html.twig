@@ -9,16 +9,14 @@
 </h1>
 <div class="row">
     <div class="col text-center">
-        <form action="{{ path('booking_filling_form') }}" method="post">
-            <input type="hidden" name="mail", value="{{ mail }}">
-            <input type="submit" value="Nouvelle réservation" class="btn btn-primary">
-        </form>
+        <a href="{{ path('booking_filling_form') }}" class="btn btn-primary">
+            Nouvelle réservation
+        </a>
     </div>
     <div class="col text-center">
-        <form action="{{ path('checking_index') }}" method="post">
-            <input type="hidden" name="mail", value="{{ mail }}">
-            <input type="submit" value="Consulter les précédentes réservations" class="btn btn-primary">
-        </form>
+        <a href="{{ path('checking_index') }}" class="btn btn-primary">
+            Consulter les précédentes réservations
+        </a>
     </div>
 </div>
 

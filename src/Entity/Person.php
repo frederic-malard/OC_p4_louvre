@@ -106,7 +106,10 @@ class Person
 
     public function setBirthDate(\DateTimeInterface $birthDate): self
     {
-        $this->birthDate = $birthDate;
+        if ($birthDate < new \DateTime())
+            $this->birthDate = $birthDate;
+        else
+            throw new \Exception('date de naissance dans le futur');
 
         return $this;
     }

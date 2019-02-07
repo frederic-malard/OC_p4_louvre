@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Person;
+use App\Entity\Reservation;
+use App\Form\ReservationType;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BookingController extends AbstractController
 {
@@ -12,6 +16,16 @@ class BookingController extends AbstractController
      */
     public function index()
     {
-        return $this->render('booking/index.html.twig');
+        $mail = $this->get('session')->get('mail');
+
+        $reservation = new Reservation();
+        $reservation->setMail($mail);
+
+        $form = $this->createForm(ReservationType::class, $reservation);
+
+        return $this->render('booking/index.html.twig', [
+            'form' => $form->createView(),
+            'mail' => $mail
+        ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CheckingController extends AbstractController
@@ -14,7 +15,7 @@ class CheckingController extends AbstractController
      */
     public function index(ReservationRepository $repository)
     {
-        $mail = $_POST['mail'];
+        $mail = $this->get('session')->get('mail');
 
         $reservations = $repository->findBy(['mail' => $mail]);
 

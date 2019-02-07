@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\ReservationRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -13,7 +14,11 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('home/index.html.twig');
+        $this->get('session')->clear();
+
+        return $this->render('home/index.html.twig', [
+            'index' => true
+        ]);
     }
 
     /**
@@ -23,20 +28,25 @@ class HomeController extends AbstractController
      */
     public function menu(ReservationRepository $repository)
     {
-        $mail = $_POST['mail'];
+        if (isset($_POST['mail']))
+        {
+            $mail = $_POST['mail'];
+            $this->get('session')->set('mail', $mail);
+        }
+        else
+            $mail = $this->get('session')->get('mail');
 
         $reservations = $repository->findBy(['mail' => $mail]);
 
-        /*if (count($reservations) == 0)
+        if (count($reservations) == 0)
         {
-            return $this->redirectToRoute("booking_filling_form", ['mail' => $mail]);
+            return $this->redirectToRoute("booking_filling_form");
         }
         else
-        {*/
+        {
             return $this->render("home/menu.html.twig", [
-                'reservations' => $reservations,
-                'mail' => $mail
+                'reservations' => $reservations
             ]);
-        //}
+        }
     }
 }
