@@ -43,11 +43,13 @@
 {% endblock %}
 
 {% block _reservation_persons_entry_row %}
-
+<div class="form-group" id="block_{{id}}">
     {{ form_widget(form) }}
-
+    <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">
+        Supprimer le visiteur
+    </button>
     <hr class="my-5">
-
+</div>
 {% endblock %}
 
 {% block javascripts %}

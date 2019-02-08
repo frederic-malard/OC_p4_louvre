@@ -19,10 +19,12 @@ class ReservationType extends AbstractType
     {
         $builder
             ->add('visitDay', DateType::class, [
-                'label' => "quel jour souhaitez vous venir ?"
+                'label' => "quel jour souhaitez vous venir ?",
+                'years' => range(date('Y'), date('Y') + 5)
             ])
             ->add('halfDay', CheckboxType::class, [
-                'label' => "arrivée après 14h (demi-tarif)"
+                'label' => "arrivée après 14h (demi-tarif)",
+                'required' => false
             ])
             ->add('persons', CollectionType::class, [
                 'entry_type' => PersonType::class,
