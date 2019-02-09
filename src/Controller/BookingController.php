@@ -61,11 +61,15 @@ class BookingController extends AbstractController
         $price = $reservation->price();
         $this->get('session')->set('price', $price);
 
-        if (isset($_POST))
+        if (isset($_POST['stripeToken']))
+        {
+            $this->get('session')->set('stripeToken', $_POST['stripeToken']);
+
             return $this->redirectToRoute("treatment");
+        }
         else
         {
-            return $this->render("payment.html.twig", [
+            return $this->render("booking/payment.html.twig", [
                 'price' => $price * 100
             ]);
         }
@@ -78,17 +82,27 @@ class BookingController extends AbstractController
     {
         Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
 
-        $token = $_POST['stripeToken'];
+        $token = $this->get('session')->get('stripeToken');
 
         $price = $this->get('session')->get('price');
 
         $charge = \Stripe\Charge::create([
-            'amount' => $prix*100,
+            'amount' => $price*100,
             'currency' => 'eur',
             'description' => 'Example charge',
             'source' => $token,
         ]);
 
         $reservation = $this->get('session')->get('reservation');
+    }
+
+    /**
+     * create the content of the mail, using a reservation object. No route here because it's just a function used by other functions.
+     *
+     * @return string
+     */
+    public function createMailContent(Reservation $reservation)
+    {
+        
     }
 }
