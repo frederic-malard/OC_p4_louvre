@@ -19,6 +19,14 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
+    public function getReservationsFromMail($mail)
+    {
+        $query = $this->_em->createQuery("SELECT r FROM App\Entity\Reservation r WHERE r.mail = :mail AND r.visitDay >= CURRENT_DATE() ORDER BY r.visitDay ASC");
+        $query->setParameter('mail', $mail);
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Reservation[] Returns an array of Reservation objects
     //  */
