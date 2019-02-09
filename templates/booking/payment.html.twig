@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}paiement{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+
+    <p>
+        Pour régler votre réservation, merci de cliquer sur le bouton ci-dessous :
+    </p>
+    <form action="" method="POST">
+        <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_gMNp5Q0kTlXgzxVlj6l3B5Ac"
+            data-amount={{price}}
+            data-name="Demo Site"
+            data-description="Example charge"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto"
+            data-currency="eur">
+        </script>
+    </form>
+
+{% endblock %}

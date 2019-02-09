@@ -181,4 +181,18 @@ class Reservation
     {
         return $this->id . '*' . $this->random;
     }
+
+    public function price()
+    {
+        $price = 0;
+        foreach($this->persons as $person)
+        {
+            if ($this->halfDay)
+                $price += $person->priceHalfDay();
+            else
+                $price += $person->priceFullDay();
+        }
+
+        return $price;
+    }
 }

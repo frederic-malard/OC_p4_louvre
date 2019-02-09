@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Stripe\Stripe;
 use App\Entity\Person;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
@@ -39,7 +40,9 @@ class BookingController extends AbstractController
 
             $manager->flush();
 
-            //return $this->redirectToRoute("payment");
+            $this->get('session')->set('reservation', $reservation);
+
+            return $this->redirectToRoute("payment");
         }
 
         return $this->render('booking/index.html.twig', [
@@ -53,6 +56,39 @@ class BookingController extends AbstractController
      */
     public function payment()
     {
+        $reservation = $this->get('session')->get('reservation');
+        
+        $price = $reservation->price();
+        $this->get('session')->set('price', $price);
 
+        if (isset($_POST))
+            return $this->redirectToRoute("treatment");
+        else
+        {
+            return $this->render("payment.html.twig", [
+                'price' => $price * 100
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/traitement", name="treatment")
+     */
+    public function treatment()
+    {
+        Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
+
+        $token = $_POST['stripeToken'];
+
+        $price = $this->get('session')->get('price');
+
+        $charge = \Stripe\Charge::create([
+            'amount' => $prix*100,
+            'currency' => 'eur',
+            'description' => 'Example charge',
+            'source' => $token,
+        ]);
+
+        $reservation = $this->get('session')->get('reservation');
     }
 }
