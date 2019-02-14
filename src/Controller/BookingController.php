@@ -54,6 +54,14 @@ class BookingController extends AbstractController
                 $manager->persist($person);
             }
 
+            foreach($reservation->getTemporaryPersonsList() as $person)
+            {
+                $reservation->addPerson($person);
+                $reservation->removeTemporaryPersonsList($person);
+                $person->addReservation($reservation);
+                $manager->persist($person);
+            }
+
             $manager->persist($reservation);
 
             $manager->flush();
