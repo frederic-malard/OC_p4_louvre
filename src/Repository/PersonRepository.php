@@ -19,6 +19,33 @@ class PersonRepository extends ServiceEntityRepository
         parent::__construct($registry, Person::class);
     }
 
+    /**
+     * Not persons that own this mail, but persons implicated in reservations made with the mail
+     */
+    public function getPersonsFromMail($mail)
+    {
+        // redo with dql to get faster than O(n^2) ?
+
+        $persons = $this->findAll();
+        foreach($persons as $key => $person)
+        {
+            $remove = true;
+            foreach($person->getReservations() as $reservation)
+            {
+                if ($reservation->getMail() == $mail)
+                {
+                    $remove = false;
+                }
+            }
+            if ($remove)
+            {
+                unset($persons[$key]);
+            }
+        }
+
+        return $persons;
+    }
+
     // /**
     //  * @return Person[] Returns an array of Person objects
     //  */

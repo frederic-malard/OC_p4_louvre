@@ -1,18 +1,9 @@
-$index = -1;
-
-$persons = $('#reservation_persons').children();
-
-if ($persons.length > 0)
-{
-    $last = $persons[$persons.length - 1];
-    $littleForm = $last.children()[0];
-    $index = parseInt($littleForm.id.substring(20));
-}
+$index = 0
 
 $('#addPerson').click(function(){
-    $index++;
-    $('#reservation_persons').append($('#reservation_persons').data('prototype').replace(/__name__/g, $index));
+    $('#reservation_temporaryPersonsList').append($('#reservation_temporaryPersonsList').data('prototype').replace(/__name__/g, $index));
     handleDeleteButtons();
+    $index++;
 });
 
 function handleDeleteButtons()

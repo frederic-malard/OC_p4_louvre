@@ -54,6 +54,11 @@ class Reservation
     private $persons;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Person")
+     */
+    private $temporaryPersonsList;
+
+    /**
      * prepare slug before persist or update. Not 100% sure it's unique (but almost) I would use id instead of mail, but can't access id before it's flushed. Would like to flush, then in PostPersist and PostUpdate, get id, modify slug, then persist and flush again, but symfony is made so we can't use a manager in an entity method. I choosed to replace id with mail, this way even if it's not 100% sure unique, it's less abstract for user.
      *
      * @ORM\PrePersist
@@ -73,6 +78,7 @@ class Reservation
     public function __construct()
     {
         $this->persons = new ArrayCollection();
+        $this->temporaryPersonsList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,5 +200,31 @@ class Reservation
         }
 
         return $price;
+    }
+
+    /**
+     * @return Collection|Person[]
+     */
+    public function getTemporaryPersonsList(): Collection
+    {
+        return $this->temporaryPersonsList;
+    }
+
+    public function addTemporaryPersonsList(Person $temporaryPersonsList): self
+    {
+        if (!$this->temporaryPersonsList->contains($temporaryPersonsList)) {
+            $this->temporaryPersonsList[] = $temporaryPersonsList;
+        }
+
+        return $this;
+    }
+
+    public function removeTemporaryPersonsList(Person $temporaryPersonsList): self
+    {
+        if ($this->temporaryPersonsList->contains($temporaryPersonsList)) {
+            $this->temporaryPersonsList->removeElement($temporaryPersonsList);
+        }
+
+        return $this;
     }
 }

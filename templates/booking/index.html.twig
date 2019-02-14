@@ -24,12 +24,34 @@
 
 {% endblock %}
 
+{% block _reservation_temporaryPersonsList_row %}
+
+    {{ form_widget(form) }}
+
+{% endblock %}
+
 {% block _reservation_persons_widget %}
 
-<hr class="my-5">
+    <hr class="my-5">
 
     <h2 class="h4 mb-3 text-center">
-        Visiteurs
+        Visiteurs précédents
+    </h2>
+
+    <p class="alert alert-info mb-5">
+        Visiteurs inclus dans une précédente réservation avec ce mail. Merci de laisser dans la suivante liste ceux que vous souhaitez inclure dans la présente réservation (vous pouvez modifier le pays où le statut de réduction si changements il y a eu), et de supprimer ceux qui ne seront pas inclus dans la présente réservation. Ils vous seront quand même proposés dans les futures réservations.
+    </p>
+
+    {{ form_widget(form) }}
+
+{% endblock %}
+
+{% block _reservation_temporaryPersonsList_widget %}
+
+    <hr class="my-5">
+
+    <h2 class="h4 mb-3 text-center">
+        Nouveaux visiteurs
     </h2>
 
     {{ form_widget(form) }}
@@ -44,6 +66,16 @@
 
 {% block _reservation_persons_entry_row %}
 <div class="form-group" id="block_{{id}}">
+    <hr class="my-5" id="hr_{{id}}">
+    {{ form_widget(form) }}
+    <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">
+        Supprimer le visiteur
+    </button>
+</div>
+{% endblock %}
+
+{% block _reservation_temporaryPersonsList_entry_row %}
+<div class="form-group" id="block_{{id}}">
     {{ form_widget(form) }}
     <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">
         Supprimer le visiteur
@@ -55,5 +87,21 @@
 {% block javascripts %}
 
     <script src="/js/addPerson.js"></script>
+    <script type="text/javascript">
+        $hrs = [];
+        $p = [];
+        $index = 0
+        {% for person in personsInfos %}
+            $hrs[$index] = $('#{{ person.hr }}');
+            $p[$index] = $('<p></p>');
+            $p[$index].html(
+                'prenom : {{ person.object.firstName }}<br />' +
+                'nom : {{ person.object.name }} <br />' +
+                'date de naissance : {{ person.object.stringBirthDate() }}'
+            );
+            $hrs[$index].after($p[$index]);
+            $index++
+        {% endfor %}
+    </script>
 
 {% endblock %}
