@@ -44,7 +44,7 @@ class Person
     private $discount;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Reservation", mappedBy="persons")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Reservation", mappedBy="persons", cascade={"persist"})
      */
     private $reservations;
 

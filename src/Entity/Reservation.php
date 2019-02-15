@@ -49,13 +49,10 @@ class Reservation
     private $random;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="reservations")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="reservations", cascade={"persist"})
      */
     private $persons;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Person")
-     */
     private $temporaryPersonsList;
 
     /**

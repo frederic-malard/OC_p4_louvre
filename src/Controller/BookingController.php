@@ -11,6 +11,7 @@ use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -89,47 +90,31 @@ class BookingController extends AbstractController
      */
     public function treatment(ObjectManager $manager)
     {
-        Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
+        /*Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
 
-        $token = $this->get('session')->get('stripeToken');
+        $token = $this->get('session')->get('stripeToken');*/
 
         $price = $this->get('session')->get('price');
 
-        $charge = \Stripe\Charge::create([
+        /*$charge = \Stripe\Charge::create([
             'amount' => $price*100,
             'currency' => 'eur',
             'description' => 'Example charge',
             'source' => $token,
-        ]);
+        ]);*/
 
         $reservation = $this->get('session')->get('reservation');
 
-        foreach($reservation->getPersons() as $person)
+        /*foreach($reservation->getPersons() as $person)
         {
-            $person->addReservation($reservation);
-            $manager->persist($person);
-        }
-
-        foreach($reservation->getTemporaryPersonsList() as $person)
-        {
-            /*$finalPerson = new Person();
-
-            $finalPerson->setFirstName($person->getFirstName());
-            $finalPerson->setName($person->getName());
-            $finalPerson->setBirthDate($person->getBirthDate());
-            $finalPerson->setCountry($person->getCountry());
-            $finalPerson->setDiscount($person->getDiscount());
-
-            $reservation->addPerson($finalPerson);
-            $reservation->removeTemporaryPersonsList($person);
-            $finalPerson->addReservation($reservation);
-            $manager->persist($finalPerson);*/
-            
             $reservation->addPerson($person);
-            $reservation->removeTemporaryPersonsList($person);
-            $person->addReservation($reservation);
-            $manager->persist($person);
         }
+
+        /*foreach($reservation->getTemporaryPersonsList() as $person)
+        {
+            $manager->persist($person);
+            $reservation->addPerson($person);
+        }*/
 
         $manager->persist($reservation);
 
@@ -138,7 +123,7 @@ class BookingController extends AbstractController
         // createMailContent
 
         // return view
-        return ("blabla");
+        return new Response("blabla");
     }
 
     /**
