@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>billet - {{ person.firstName }} {{ person.name }}</title>
+        <meta charset="utf-8" />
+    </head>
+    <body style="text-align : justify; background : #fcca6e;">
+        <a href="http://localhost:8888{{ asset('app_dev.php') }}" style="text-decoration : none;">
+            <header style="text-align : center; font-style : italic; margin : -10px; padding : 20px; background : black; color : white; margin-top : -30px; padding-top : 35px; text-decoration : none; color : rgb(138, 136, 255);">
+                <h1 style="background : black; color : white;">Musée du Louvre - site de réservation de billets</h1>
+            </header>
+        </a>
+        <section style="margin : 10px; margin-top : 30px;">
+            <p style="text-align : center;">
+                <img src="http://localhost:8888{{ asset('images/musee.jpg') }}" alt="louvre" />
+            </p>
+            <h3>
+                Billet pour visiter le musée du Louvre à Paris
+            </h3>
+            <p>
+                date de visite : {{ reservation.stringVisitDay() }} <br>
+                mail utilisé pour la réservation : {{ reservation.mail }} <br>
+                {% if reservation.halfDay %}
+                    demi-journée <br>tarif : {{ reservation.priceHalfDay()}}€
+                {% else %}
+                    journée entière <br>tarif : {{ reservation.priceFullDay() }}€
+                {% endif %}
+                <br>code de réservation : {{ reservation.getBookingCode() }}
+            </p>
+            <p>
+                prénom : {{ person.firstName }} <br>
+                nom : {{ person.name }} <br>
+                date de naissance : {{ person.stringBirthDate() }} <br>
+                réduction : 
+                {% if person.reduction %}
+                    oui
+                {% else %}
+                    non
+                {% endif %}
+            </p>
+            <p>
+                Cet e-mail fait office de billet. Vous pouvez l'imprimer ou le montrer sur votre smartphone ou tablette.
+            </p>
+        </section>
+        <footer style="text-align : center; font-style : italic; margin : -10px; padding : 20px; background : black; color : white; margin-top : 20px; padding-top : 25px;">
+            <table style="background : black; color : white; margin : auto;">
+                <tr>
+                    <td>
+                        <a href="https://www.louvre.fr" style="font-style : italic;">lien vers le site officiel du musée du Louvre</a><br />
+                        adresse postale : Musée du Louvre, 75058 Paris CEDEX 01, France<br />
+                        téléphone : + 33 (0)1 40 20 50 50.<br />
+                        mail du louvre : info@louvre.fr<br />
+                        mail relatif au présent site : testsDivers2@gmail.com<br />
+                </tr>
+            </table>
+        </footer>
+    </body>
+</html>
