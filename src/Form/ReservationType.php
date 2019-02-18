@@ -28,7 +28,8 @@ class ReservationType extends AbstractType
             ])
             ->add('persons', CollectionType::class, [
                 'entry_type' => PersonType::class,
-                'allow_add' => true
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
             ->add('temporaryPersonsList', CollectionType::class, [
                 'entry_type' => TemporaryPersonType::class,
