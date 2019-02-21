@@ -8,6 +8,7 @@ use App\Entity\Person;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\PersonRepository;
+use Symfony\Component\Asset\Package;
 use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
 class BookingController extends AbstractController
 {
@@ -79,21 +81,23 @@ class BookingController extends AbstractController
      */
     public function treatment(ObjectManager $manager)
     {
-        Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
+        //Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
 
-        $token = $this->get('session')->get('stripeToken');
+        //$token = $this->get('session')->get('stripeToken');
 
         $price = $this->get('session')->get('price');
 
-        $charge = \Stripe\Charge::create([
+        /*$charge = \Stripe\Charge::create([
             'amount' => $price*100,
             'currency' => 'eur',
             'description' => 'Example charge',
             'source' => $token,
-        ]);
+        ]);*/
+
+        $mail = $this->get('session')->get('mail');
 
         $reservationData = $this->get('session')->get('reservation');
-        $reservation = $this->prepareReservation($this->get('session')->get('mail'), $manager);
+        $reservation = $this->prepareReservation($mail, $manager);
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->submit($reservationData);
 
@@ -107,20 +111,18 @@ class BookingController extends AbstractController
 
         $manager->flush();
 
-        // createMailContent
-        // note : je devrais transformer ça en une collection de billets en HTML !!!
-        createMailContent($reservation);
+        $this->sendMail($reservation, $mail);
 
         // return view
         return new Response("blabla");
     }
 
     /**
-     * create the content of the mail, using a reservation object. No route here because it's just a function used by other functions.
+     * send the mail, using a reservation object. No route here because it's just a function used by other functions.
      *
      * @return string
      */
-    public function createMailContent(Reservation $reservation)
+    public function sendMail(Reservation $reservation, $mail)
     {
         $mailSubject = 'Votre réservation pour le musée du Louvre';
 
@@ -159,8 +161,11 @@ class BookingController extends AbstractController
         $i = 0;
         foreach ($reservation->getPersons() as $person)
         {
+            /*$package = new Package(new EmptyVersionStrategy());
+            $picture = $package->getUrl('/image/musee.jpg');*/
+
             $pdfFile = new Dompdf();
-            $pdfFile->loadHtml($this->templating->render('mail/ticket.html.twig', ['person' => $person, 'reservation' => $reservation]))
+            $pdfFile->loadHtml($this->render('mail/ticket.html.twig', ['person' => $person, 'reservation' => $reservation]))
                     ->setPaper('A4', 'portrait')
                     ->render();
             
@@ -173,8 +178,6 @@ class BookingController extends AbstractController
         }
 
         $this->get('mailer')->send($mailFinal);
-
-
     }
 
     private function prepareReservation(string $mail, ObjectManager $manager) {

@@ -4,14 +4,14 @@
         <meta charset="utf-8" />
     </head>
     <body style="text-align : justify; background : #fcca6e;">
-        <a href="http://localhost:8888{{ asset('app_dev.php') }}" style="text-decoration : none;">
+        <a href="http://localhost:8888" style="text-decoration : none;">
             <header style="text-align : center; font-style : italic; margin : -10px; padding : 20px; background : black; color : white; margin-top : -30px; padding-top : 35px; text-decoration : none; color : rgb(138, 136, 255);">
                 <h1 style="background : black; color : white;">Musée du Louvre - site de réservation de billets</h1>
             </header>
         </a>
         <section style="margin : 10px; margin-top : 30px;">
             <p style="text-align : center;">
-                <img src="http://localhost:8888{{ asset('images/musee.jpg') }}" alt="louvre" />
+                <img src="http://localhost:8888/image/musee.jpg" alt="louvre" />
             </p>
             <h3>
                 Billet pour visiter le musée du Louvre à Paris
@@ -20,18 +20,19 @@
                 date de visite : {{ reservation.stringVisitDay() }} <br>
                 mail utilisé pour la réservation : {{ reservation.mail }} <br>
                 {% if reservation.halfDay %}
-                    demi-journée <br>tarif : {{ reservation.priceHalfDay()}}€
+                    demi-journée <br>
                 {% else %}
-                    journée entière <br>tarif : {{ reservation.priceFullDay() }}€
+                    journée entière <br>
                 {% endif %}
-                <br>code de réservation : {{ reservation.getBookingCode() }}
+                tarif : {{ reservation.price()}}€<br>
+                code de réservation : {{ reservation.getBookingCode() }}
             </p>
             <p>
                 prénom : {{ person.firstName }} <br>
                 nom : {{ person.name }} <br>
                 date de naissance : {{ person.stringBirthDate() }} <br>
                 réduction : 
-                {% if person.reduction %}
+                {% if person.discount %}
                     oui
                 {% else %}
                     non

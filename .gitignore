@@ -27,3 +27,6 @@ yarn-error.log
 ###> phpunit/phpunit ###
 /phpunit.xml
 ###< phpunit/phpunit ###
+
+.DS_Store
+public/.DS_Store
