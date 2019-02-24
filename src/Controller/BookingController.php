@@ -79,7 +79,7 @@ class BookingController extends AbstractController
     /**
      * @Route("/traitement", name="treatment")
      */
-    public function treatment(ObjectManager $manager)
+    public function treatment(ObjectManager $manager, \Swift_Mailer $mailer)
     {
         //Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
 
@@ -111,7 +111,7 @@ class BookingController extends AbstractController
 
         $manager->flush();
 
-        $this->sendMail($reservation, $mail);
+        $this->sendMail($reservation, $mail, $mailer);
 
         // return view
         return new Response("blabla");
@@ -122,7 +122,7 @@ class BookingController extends AbstractController
      *
      * @return string
      */
-    public function sendMail(Reservation $reservation, $mail)
+    public function sendMail(Reservation $reservation, $mail, \Swift_Mailer $mailer)
     {
         $mailSubject = 'Votre réservation pour le musée du Louvre';
 
@@ -155,6 +155,7 @@ class BookingController extends AbstractController
             ->setFrom('travail@MacBook-Pro-de-frederic.local')
             ->setTo($mail)
             ->setCharset('UTF-8')
+            ->setEncoder(\Swift_Encoding::getBase64Encoding())
             ->setBody($messageText)
             ->addPart($messageHtml, 'text/html');
         
@@ -165,19 +166,19 @@ class BookingController extends AbstractController
             $picture = $package->getUrl('/image/musee.jpg');*/
 
             $pdfFile = new Dompdf();
-            $pdfFile->loadHtml($this->render('mail/ticket.html.twig', ['person' => $person, 'reservation' => $reservation]))
-                    ->setPaper('A4', 'portrait')
-                    ->render();
+            $pdfFile->load_html($this->render('mail/ticket.html.twig', ['person' => $person, 'reservation' => $reservation]));
+            $pdfFile->setPaper('A4', 'portrait');
+            $pdfFile->render();
             
-            $pdfName = $i . '_' . $person.getFirstName() . '_' . $person.getName() . '.pdf';
+            $pdfName = $i . '_' . $person->getFirstName() . '_' . $person->getName() . '.pdf';
             $i++;
 
-            $attachment = new Swift_Attachment($pdfFile, $pdfName, 'application/pdf');
+            $attachment = new \Swift_Attachment($pdfFile, $pdfName, 'application/pdf');
 
             $finalMail->attach($attachment);
         }
 
-        $this->get('mailer')->send($mailFinal);
+        $mailer->send($finalMail);
     }
 
     private function prepareReservation(string $mail, ObjectManager $manager) {
