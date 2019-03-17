@@ -28,11 +28,7 @@ class BookingController extends AbstractController
     {
         $mail = $this->get('session')->get('mail');
         $reservation = $this->prepareReservation($mail, $manager);
-
-        $personsInfosForIndex = [];
-        $cpt = 0;
-
-        $personsInfos = $reservation->createPersonInfos();
+        $personsInfosForIndex = $reservation->createPersonsInfos();
     
         $form = $this->createForm(ReservationType::class, $reservation);
         
@@ -49,7 +45,7 @@ class BookingController extends AbstractController
         return $this->render('booking/index.html.twig', [
             'form' => $form->createView(),
             'mail' => $mail,
-            'personsInfos' => $personsInfos;
+            'personsInfos' => $personsInfosForIndex
         ]);
     }
 

@@ -224,4 +224,18 @@ class Reservation
 
         return $this;
     }
+
+    public function createPersonsInfos()
+    {
+        $personsInfosForIndex = [];
+        $cpt = 0;
+
+        foreach($this->getPersons() as $person)
+        {
+            $personsInfosForIndex[] = ['hr' => 'hr_reservation_persons_' . $cpt, 'object' => $person];
+            $cpt++;
+        }
+
+        return $personsInfosForIndex;
+    }
 }
