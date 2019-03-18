@@ -31,10 +31,6 @@ class ReservationType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('temporaryPersonsList', CollectionType::class, [
-                'entry_type' => TemporaryPersonType::class,
-                'allow_add' => true
-            ])
             ->add('save', SubmitType::class, [
                 "label" => "Réserver",
                 "attr" => [

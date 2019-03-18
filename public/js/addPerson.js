@@ -1,7 +1,7 @@
 $index = 0
 
 $('#addPerson').click(function(){
-    $('#reservation_temporaryPersonsList').append($('#reservation_temporaryPersonsList').data('prototype').replace(/__name__/g, $index));
+    $('#reservation_persons').append($('#reservation_persons').data('prototype').replace(/__name__/g, $index));
     handleDeleteButtons();
     $index++;
 });

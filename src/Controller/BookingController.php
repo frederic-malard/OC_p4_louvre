@@ -27,8 +27,12 @@ class BookingController extends AbstractController
     public function index(Request $request, ObjectManager $manager)
     {
         $mail = $this->get('session')->get('mail');
-        $reservation = $this->prepareReservation($mail, $manager);
-        $personsInfosForIndex = $reservation->createPersonsInfos();
+
+        // reservation doit être initialiser différement selon que le form ait déjà été rempli ou non ?
+        /* $reservation = $request->request->get('reservation');
+        if ($reservation == null)*/
+        $reservation = new Reservation();
+        $reservation->setMail($mail);
     
         $form = $this->createForm(ReservationType::class, $reservation);
         
@@ -44,8 +48,7 @@ class BookingController extends AbstractController
 
         return $this->render('booking/index.html.twig', [
             'form' => $form->createView(),
-            'mail' => $mail,
-            'personsInfos' => $personsInfosForIndex
+            'mail' => $mail
         ]);
     }
 
@@ -93,7 +96,8 @@ class BookingController extends AbstractController
             $mail = $this->get('session')->get('mail');
 
             $reservationData = $this->get('session')->get('reservation');
-            $reservation = $this->prepareReservation($mail, $manager);
+            $reservation = new Reservation();
+            $reservation->setMail($mail);
             $form = $this->createForm(ReservationType::class, $reservation);
             $form->submit($reservationData);
 
@@ -189,20 +193,5 @@ class BookingController extends AbstractController
         }
 
         $mailer->send($finalMail);
-    }
-
-    private function prepareReservation(string $mail, ObjectManager $manager) {
-        $reservation = new Reservation();
-        $reservation->setMail($mail);
-
-        // all persons that have already been involved in a reservation made with the mail used to began this new reservation
-        $personsMatching = $this->getDoctrine()->getRepository(Person::class)->getPersonsFromMail($mail);
-
-        foreach($personsMatching as $person)
-        {
-            $reservation->addPerson($person);
-        }
-
-        return $reservation;
     }
 }
