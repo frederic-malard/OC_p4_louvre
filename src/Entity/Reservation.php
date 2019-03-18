@@ -29,9 +29,18 @@ class Reservation
     private $mail;
 
     /**
+     * visit day (the day people will go to louvre)
+     * 
      * @ORM\Column(type="date")
      */
     private $visitDay;
+
+    /**
+     * the date and time booking were made (do not mistake this for visit day)
+     * 
+     * @ORM\Column(type="datetime")
+     */
+    private $dateBookingWereMade;
 
     /**
      * @ORM\Column(type="boolean")
@@ -66,10 +75,12 @@ class Reservation
         if (empty($this->random))
         {
             $random = 'azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890';
-            $this->random = substr(str_shuffle($random), 0, 20);
+            $this->random = substr(str_shuffle($random), 0, 5);
         }
         if (empty($this->slug))
             $this->slug = (new Slugify())->slugify($this->mail . ' ' . $this->random);
+        if (empty($this->dateBookingWereMade))
+            $this->dateBookingWereMade = new \DateTime();
     }
 
     public function __construct()
@@ -180,9 +191,32 @@ class Reservation
         return $this;
     }
 
+    /**
+     * return the booking code, made with :
+     * - the id of the reservation this way we're sure the booking code will be unique
+     * - the 3 first letters of the mail this way a human can easily recognozie the reservation with the booking code
+     * - the day of the reservation with formate ddmmyy this way humans can get infos about reservation just when customer give booking code
+     * - some random letters and numbers, this way it get harder for malicious visitors to print a fake ticket with a booking code that have chance to already exists in the database. Also usefull if for some reason the database is erased and reservation id get back to 1, this way we could have twice the same id on tickets.
+     *
+     * @return void
+     */
     public function getBookingCode()
     {
-        return $this->id . '*' . $this->random;
+        $codemail = substr($this->mail, 0, 1); // 3 first letters of mail
+        $length = 1;
+        $i = 1;
+        $lettres = 'azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN';
+        while ($length < 3 && $i < strlen($this->mail))
+        {
+            if (strstr ($lettres, substr($this->mail, $i, 1)))
+            {
+                $codemail .= substr($this->mail, $i, 1);
+                $length++;
+            }
+            $i++;
+        }
+
+        return $this->id . $codemail . $this->visitDay->format('dmy') . $this->random;
     }
 
     public function price()
@@ -221,6 +255,18 @@ class Reservation
         if ($this->temporaryPersonsList->contains($temporaryPersonsList)) {
             $this->temporaryPersonsList->removeElement($temporaryPersonsList);
         }
+
+        return $this;
+    }
+
+    public function getDateBookingWereMade(): ?\DateTimeInterface
+    {
+        return $this->dateBookingWereMade;
+    }
+
+    public function setDateBookingWereMade(\DateTimeInterface $dateBookingWereMade): self
+    {
+        $this->dateBookingWereMade = $dateBookingWereMade;
 
         return $this;
     }
