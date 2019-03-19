@@ -31,6 +31,8 @@ class Reservation
     /**
      * visit day (the day people will go to louvre)
      * 
+     * @Assert\GreaterThanOrEqual("today")
+     * 
      * @ORM\Column(type="date")
      */
     private $visitDay;

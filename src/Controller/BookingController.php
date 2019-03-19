@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use Dompdf\Dompdf;
 use Stripe\Stripe;
+use App\Service\Mail;
 use App\Entity\Person;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
@@ -74,7 +74,7 @@ class BookingController extends AbstractController
     /**
      * @Route("/traitement", name="treatment")
      */
-    public function treatment(ObjectManager $manager, \Swift_Mailer $mailer)
+    public function treatment(ObjectManager $manager, \Swift_Mailer $mailer, Mail $mailService)
     {
         Stripe::setApiKey("sk_test_AssWuckpnHlwx6B4edglOnpj");
 
@@ -111,7 +111,7 @@ class BookingController extends AbstractController
 
             $manager->flush();
 
-            $this->sendMail($reservation, $mail, $mailer);
+            $mailService->sendMail($reservation, $mail, $mailer);
         }
 
         // return view
@@ -119,79 +119,5 @@ class BookingController extends AbstractController
             'success' => $success,
             'mail' => $mail
         ]);
-    }
-
-    /**
-     * send the mail, using a reservation object. No route here because it's just a function used by other functions.
-     *
-     * @return string
-     */
-    public function sendMail(Reservation $reservation, $mail, \Swift_Mailer $mailer)
-    {
-        $mailSubject = 'Votre réservation pour le musée du Louvre';
-
-        if (preg_match("#(hotmail|live|msn)\.[a-zA-Z]{2,6}$#", $mail))
-            $newLine = "\r\n";
-        else
-            $newLine = "\n";
-
-        $message = array();
-        $message[] = 'Merci pour votre réservation au musée du Louvre.';
-        $message[] = 'Vous avez réservé pour la date du ' . $reservation->stringVisitDay();
-        if ($reservation->getHalfDay())
-            $message[] = 'Votre arrivée est prévue après 14h.';
-        else
-            $message[] = 'Vous pouvez venir à l\'heure que vous désirez.';
-        $message[] = 'Votre numéro de réservation est le' . $reservation->getBookingCode();
-        $message[] = 'coût total de la réservation : ' . $reservation->price() . '€';
-        $message[] = 'Chaque visiteur devra présenter son billet, joint à ce présent mail, au format pdf, imprimable.';
-        $message[] = 'Une pièce d\'identité, ainsi qu\'un justificatif pour une éventuelle réduction, sera aussi demandée à chaque visiteur.';
-
-        $messageText = '';
-        //$messageHtml = '<!doctype html><html><head><title>réservation</title></head><body>';
-        //$messageHtml = '<p>';
-        foreach($message as $paragraph)
-        {
-            $messageText .= $paragraph . $newLine;
-            //$messageHtml .= $paragraph . '</p><p>';
-        }
-        //$messageHtml = '</p>';
-        //$messageHtml = '</body></html>';
-
-        $finalMail = (new \Swift_Message($mailSubject))
-            ->setSubject($mailSubject)
-            ->setFrom('travail@MacBook-Pro-de-frederic.local')
-            ->setTo($mail)
-            ->setCharset('UTF-8')
-            //->attach(\Swift_Attachment::fromPath('/image/musee.jpg', 'image/jpeg'))
-            ->setBody($messageText, 'text/plain');
-            //->embed(\Swift_Image::fromPath('/image/musee.jpg'));
-            //->addPart($messageHtml, 'text/html');
-            //->addPart($this->renderView(page twig avec le corps du message));
-        
-        $i = 0;
-        foreach ($reservation->getPersons() as $person)
-        {
-            /*$package = new Package(new EmptyVersionStrategy());
-            $picture = $package->getUrl('/image/musee.jpg');*/
-
-            $pdfFile = new Dompdf();
-            $pdfFile->load_html($this->render('mail/ticket.html.twig', ['person' => $person, 'reservation' => $reservation]));
-            $pdfFile->setPaper('A4', 'portrait');
-            $pdfFile->render();
-
-            $output = $pdfFile->output();
-            /*$publicDirectory = $this->get('kernel')->getProjectDir() . '/public';
-            $pdfFilePath = $publicDirectory . '/mypdf';*/
-            
-            $pdfName = $i . '_' . $person->getFirstName() . '_' . $person->getName() . '.pdf';
-            $i++;
-
-            $attachment = new \Swift_Attachment($output, $pdfName, 'application/pdf');
-
-            $finalMail->attach($attachment);
-        }
-
-        $mailer->send($finalMail);
     }
 }
