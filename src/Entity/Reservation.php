@@ -31,7 +31,10 @@ class Reservation
     /**
      * visit day (the day people will go to louvre)
      * 
-     * @Assert\GreaterThanOrEqual("today")
+     * @Assert\GreaterThanOrEqual(
+     *      "today",
+     *      message = "Vous avez entré une date passée, merci de vérifier votre date de visite."
+     * )
      * 
      * @ORM\Column(type="date")
      */

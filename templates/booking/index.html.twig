@@ -43,14 +43,37 @@
 {% endblock %}
 
 {% block _reservation_persons_entry_row %}
-<div class="form-group" id="block_{{id}}">
-    <hr class="my-5" id="hr_{{id}}">
-    {{ form_widget(form) }}
-    <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">
-        Supprimer le visiteur
-    </button>
-</div>
+    <div class="form-group" id="block_{{id}}">
+        <hr class="my-5" id="hr_{{id}}">
+        {{ form_widget(form) }}
+        <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">
+            Supprimer le visiteur
+        </button>
+    </div>
 {% endblock %}
+
+{#
+{% block date_errors %}
+    {% if errors|length > 0 %}
+        {% if compound %}
+            {# ... display the global form errors # }
+            <ul style="list-style : none; margin-bottom : 0px; margin-left : -20px;">
+                {% for error in errors %}
+                    <li>
+                        <span style="font-variant : small-caps; background : red; border-radius : 5px; padding : 3px; padding-top : 0px;">
+                            error
+                        </span>
+
+                        {#{{ error.message }}# }
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            {# ... display the errors for a single field # }
+        {% endif %}
+    {% endif %}
+{% endblock %}
+#}
 
 {% block javascripts %}
 
