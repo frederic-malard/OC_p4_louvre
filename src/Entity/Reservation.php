@@ -61,6 +61,8 @@ class Reservation
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="reservations", cascade={"persist"})
+     * 
+     * @Assert\Valid()
      */
     private $persons;
 
