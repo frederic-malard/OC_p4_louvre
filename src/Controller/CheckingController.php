@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Mail;
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,10 +30,20 @@ class CheckingController extends AbstractController
      *
      * @Route("/reservation_{slug}", name="checking_show")
      */
-    public function show(Reservation $reservation)
+    public function show(Reservation $reservation, Mail $mailService, \Swift_Mailer $mailer) // mailservice se fera depuis autre route appelée par le bouton
     {
+        $mail = $this->get('session')->get('mail');
+
         return $this->render("checking/show.html.twig", [
-            'reservation' => $reservation
+            'reservation' => $reservation,
+            'mail' => $mail,
+            'mailer' => $mailer,
+            'mailService' => $mailService
         ]);
+    }
+
+    public function resendMail()
+    {
+        
     }
 }

@@ -123,10 +123,7 @@ class Reservation
 
     public function setVisitDay(\DateTimeInterface $visitDay): self
     {
-        if ($visitDay >= new \DateTime())
-            $this->visitDay = $visitDay;
-        else
-            throw new \Exception('date de visite passée');
+        $this->visitDay = $visitDay;
 
         return $this;
     }

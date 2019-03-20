@@ -101,11 +101,11 @@ class BookingController extends AbstractController
             $form = $this->createForm(ReservationType::class, $reservation);
             $form->submit($reservationData);
 
-            foreach($reservation->getTemporaryPersonsList() as $person)
+            /*foreach($reservation->getTemporaryPersonsList() as $person)
             {
                 $manager->persist($person);
                 $reservation->addPerson($person);
-            }
+            }*/
 
             $manager->persist($reservation);
 
