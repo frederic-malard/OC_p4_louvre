@@ -32,6 +32,13 @@ class Person
     private $name;
 
     /**
+     * @Assert\Length(
+     *      min=2,
+     *      max=255,
+     *      minMessage="le prénom doit faire au moins 2 caractères",
+     *      maxMessage="le prénom doit faire au maximum 255 caractères"
+     * )
+     * 
      * @ORM\Column(type="string", length=255)
      */
     private $firstName;
@@ -42,6 +49,15 @@ class Person
     private $country;
 
     /**
+     * @Assert\LessThanOrEqual(
+     *      "today",
+     *      message = "Vous avez entré une date future, merci de vérifier votre date de visite."
+     * )
+     * @Assert\GreaterThanOrEqual(
+     *      "-124 years",
+     *      message = "Vous avez entré une date passée de plus de 124 ans, merci de vérifier votre date de visite."
+     * )
+     * 
      * @ORM\Column(type="date")
      */
     private $birthDate;

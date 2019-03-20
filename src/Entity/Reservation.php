@@ -24,6 +24,11 @@ class Reservation
     private $id;
 
     /**
+     * Assert\Email(
+     *      message = "l'email {{value}} n'est pas reconnu comme un email. Merci de le vérifier.",
+     *      checkMX = true
+     * )
+     * 
      * @ORM\Column(type="string", length=255)
      */
     private $mail;
@@ -41,7 +46,10 @@ class Reservation
     private $visitDay;
 
     /**
-     * the date and time booking were made (do not mistake this for visit day)
+     * the date and time booking were made (do not mistake this for visit day). Assert : 10 minutes marge just in case the connection is slow or anything else.
+     * 
+     * @Assert\LessThanOrEqual("+5 minutes")
+     * @Assert\GreaterThanOrEqual("-5 minutes")
      * 
      * @ORM\Column(type="datetime")
      */
