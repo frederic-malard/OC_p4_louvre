@@ -22,7 +22,7 @@
     Vous n'avez pas reçu vos billets par mail ? Attendez une ou deux minutes. Si vous ne les recevez toujours pas, cliquez sur le bouton si dessous :
 </p>
 <p class="text-center"> {# faire un sendmail depuis bouton JS ? Possible ? #}
-    <button>Renvoyer un mail</button>
+    <a class="btn btn-primary" href="{{ path('resend', {'slug' : reservation.slug}) }}">Renvoyer un mail</a>
 </p>
 {% for person in reservation.persons %}
     <h2 class="mt-5 h4">

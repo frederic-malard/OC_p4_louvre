@@ -30,20 +30,29 @@ class CheckingController extends AbstractController
      *
      * @Route("/reservation_{slug}", name="checking_show")
      */
-    public function show(Reservation $reservation, Mail $mailService, \Swift_Mailer $mailer) // mailservice se fera depuis autre route appelée par le bouton
+    public function show(Reservation $reservation) // mailservice se fera depuis autre route appelée par le bouton
     {
         $mail = $this->get('session')->get('mail');
 
         return $this->render("checking/show.html.twig", [
             'reservation' => $reservation,
-            'mail' => $mail,
-            'mailer' => $mailer,
-            'mailService' => $mailService
+            'mail' => $mail
         ]);
     }
 
-    public function resendMail()
+    /**
+     * resend mail
+     *
+     * @Route("/resend_mail/{slug}", name="resend")
+     */
+    public function resendMail(Reservation $reservation, Mail $mailService, \Swift_Mailer $mailer)
     {
-        
+        $mail = $this->get('session')->get('mail');
+
+        $mailService->sendMail($reservation, $mail, $mailer);
+
+        return $this->render("checking/resend.html.twig", [
+            'mail' => $mail
+        ]);
     }
 }

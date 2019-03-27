@@ -50,12 +50,12 @@ class Person
 
     /**
      * @Assert\LessThanOrEqual(
-     *      "today",
-     *      message = "Vous avez entré une date future, merci de vérifier votre date de visite."
+     *      "+9 month",
+     *      message = "Vous avez entré une date de naissance future, merci de vérifier votre date de visite."
      * )
      * @Assert\GreaterThanOrEqual(
-     *      "-124 years",
-     *      message = "Vous avez entré une date passée de plus de 124 ans, merci de vérifier votre date de visite."
+     *      "-125 years",
+     *      message = "Vous avez entré une date passée de plus de 125 ans, merci de vérifier votre date de naissance."
      * )
      * 
      * @ORM\Column(type="date")
