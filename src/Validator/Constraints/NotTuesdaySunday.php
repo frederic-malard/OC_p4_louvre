@@ -10,5 +10,5 @@ use Symfony\Component\Validator\Constraint;
 
 class NotTuesdaySunday extends Constraints
 {
-    
+    public $message = "la date de visite choisie tombe un mardi ou un dimanche, jours de fermeture du Louvre.";
 }

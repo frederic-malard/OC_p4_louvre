@@ -10,5 +10,5 @@ use Symfony\Component\Validator\Constraint;
 
 class ThousandOrLess extends Constraints
 {
-
+    public $message = "La capacité d'accueil du Louvre pour la date sélectionnée est dépassée. Merci de choisir une autre date.";
 }
