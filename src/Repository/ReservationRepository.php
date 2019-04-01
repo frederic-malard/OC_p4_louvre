@@ -27,6 +27,14 @@ class ReservationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function countVisitorsOndate($visitDay)
+    {
+        $query = $this->_em->createQuery("SELECT COUNT(r) FROM App\Entity\Reservation r WHERE r.visitDay = :visitDay");
+        $query->setParameter('visitDay', $visitDay);
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Reservation[] Returns an array of Reservation objects
     //  */

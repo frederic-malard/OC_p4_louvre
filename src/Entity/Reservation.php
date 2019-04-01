@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Validator\Constraints as ReservationAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -40,6 +41,7 @@ class Reservation
      *      "today",
      *      message = "Vous avez entré une date passée, merci de vérifier votre date de visite."
      * )
+     * @ReservationAssert\ThousandOrLess
      * 
      * @ORM\Column(type="date")
      */
