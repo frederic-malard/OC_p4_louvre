@@ -2,6 +2,7 @@
 
 namespace App\Validator\Constraints;
 
+use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
 use Symfony\Component\Validator\Constraint;
 use App\Validator\Constraints\ThousandOrLess;
@@ -11,7 +12,12 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class ThousandOrLessValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint, ReservationRepository $repository) // problème : reservationRepository est en trop. Comment le récupérer sans le passer en paramètre ?
+    private function getReservationRepository()
+    {
+        return $this->getDoctrine()->getRepository(Reservation::class);
+    }  
+
+    public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof ThousandOrLess) {
             throw new UnexpectedTypeException($constraint, ThousandOrLess::class);
@@ -31,7 +37,7 @@ class ThousandOrLessValidator extends ConstraintValidator
             // throw new UnexpectedValueException($value, 'string|int');
         }
 
-        if ($repository->countVisitorsOnDate($value) >= 1000) {
+        if ($this->getReservationRepository()->countVisitorsOnDate($value) >= 1000) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }
