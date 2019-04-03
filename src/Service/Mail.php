@@ -87,7 +87,11 @@ class Mail
             $picture = $package->getUrl('/image/musee.jpg');*/
 
             $pdfFile = new Dompdf();
-            $pdfFile->load_html($this->templating->render('mail/ticket.html.twig', ['person' => $person, 'reservation' => $this->reservation]));
+            $pdfFile->load_html($this->templating->render('mail/ticket.html.twig', [
+                'person' => $person,
+                'reservation' => $this->reservation,
+                'imagePath' => getenv('PUBLIC_HOST')
+            ]));
             $pdfFile->setPaper('A4', 'portrait');
             $pdfFile->render();
 
