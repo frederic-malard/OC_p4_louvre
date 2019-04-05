@@ -68,7 +68,7 @@ class Mail
     {
         $this->finalMail = (new \Swift_Message($this->mailSubject))
             ->setSubject($this->mailSubject)
-            ->setFrom('travail@MacBook-Pro-de-frederic.local')
+            ->setFrom('testsDivers2@gmail.com')
             ->setTo($this->mail)
             ->setCharset('UTF-8')
             //->attach(\Swift_Attachment::fromPath('/image/musee.jpg', 'image/jpeg'))
