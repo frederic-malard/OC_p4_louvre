@@ -42,6 +42,7 @@ class Reservation
      *      message = "Vous avez entré une date passée, merci de vérifier votre date de visite."
      * )
      * @ReservationAssert\ThousandOrLess
+     * @ReservationAssert\ForbiddenDays
      * 
      * @ORM\Column(type="date")
      */
