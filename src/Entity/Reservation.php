@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
  * @ORM\HasLifecycleCallbacks
  */
+// @ReservationAssert\Afternoon
 class Reservation
 {
     /**
