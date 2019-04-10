@@ -43,6 +43,11 @@
                 <p>
                     Cet e-mail fait office de billet. Vous pouvez l'imprimer ou le montrer sur votre smartphone ou tablette.
                 </p>
+                {% if person.discount %}
+                    <p style="color : red;">
+                        Pensez à apporter un justificatif relatif à votre réduction (carte étudiant, militaire ...)
+                    </p>
+                {% endif %}
             </section>
         </div>
         <footer style="text-align : center; font-style : italic; margin : -10px; padding : 20px; background : black; color : white; margin-top : 20px; padding-top : 25px;">

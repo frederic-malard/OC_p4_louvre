@@ -43,6 +43,7 @@ class Reservation
      * )
      * @ReservationAssert\ThousandOrLess
      * @ReservationAssert\ForbiddenDays
+     * // créer custom validator ici et créer datetime pour heure actuelle, si jour visite = jour actuel vérif heure
      * 
      * @ORM\Column(type="date")
      */
