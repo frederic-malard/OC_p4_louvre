@@ -11,7 +11,7 @@ class AfternoonValidator extends ConstraintValidator
     {
         /* @var $constraint App\Validator\Afternoon */
 
-        if ($value->getVisitDay() == new \Date() && ! $value->getHalfDay() && (int) date('H') >= 14)
+        if ($value->getVisitDay()->format('Y-m-d') == (new \DateTime())->format('Y-m-d') && ! $value->getHalfDay() && (int) date('H') >= 14)
             $this->context->buildViolation($constraint->message)
             ->addViolation();
     }

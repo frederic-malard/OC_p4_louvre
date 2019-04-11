@@ -14,8 +14,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
  * @ORM\HasLifecycleCallbacks
+ * @ReservationAssert\Afternoon
  */
-// @ReservationAssert\Afternoon
 class Reservation
 {
     /**
@@ -41,6 +41,10 @@ class Reservation
      * @Assert\GreaterThanOrEqual(
      *      "today",
      *      message = "Vous avez entré une date passée, merci de vérifier votre date de visite."
+     * )
+     * @Assert\LessThanOrEqual(
+     *      "+5 years",
+     *      message = "Nous ne prévoyons pas de visites plus de 5 ans à l'avance, merci de modifier votre date de visite."
      * )
      * @ReservationAssert\ThousandOrLess
      * @ReservationAssert\ForbiddenDays
