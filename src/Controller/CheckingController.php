@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * when the visitor go through the consultation part of the website
+ */
+
 namespace App\Controller;
 
 use App\Service\Mail;
@@ -12,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CheckingController extends AbstractController
 {
     /**
+     * provide the list of all the reservations previously passed using the mail given at the homepage
+     * 
      * @Route("/consultation-reservations", name="checking_index")
      */
     public function index(ReservationRepository $repository)
@@ -30,7 +36,7 @@ class CheckingController extends AbstractController
      *
      * @Route("/reservation_{slug}", name="checking_show")
      */
-    public function show(Reservation $reservation) // mailservice se fera depuis autre route appelée par le bouton
+    public function show(Reservation $reservation)
     {
         $mail = $this->get('session')->get('mail');
 
@@ -41,7 +47,7 @@ class CheckingController extends AbstractController
     }
 
     /**
-     * resend mail
+     * resend mail with tickets relatives to the reservation, using the handmade mail service, that use itslef swiftmailer
      *
      * @Route("/resend_mail/{slug}", name="resend")
      */
