@@ -1,3 +1,5 @@
+{# new reservation form #}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}nouvelle réservation{% endblock %}
@@ -18,12 +20,14 @@
 
 {% endblock %}
 
+{# we keep just  the widget in the persons row, this way we remove all the default text at once #}
 {% block _reservation_persons_row %}
 
     {{ form_widget(form) }}
 
 {% endblock %}
 
+{# customizing the persons widget, creating all the code common to the whole persons collection at once which is a "visiteurs" title before the collection and the "ajoutez un visiteur" button to add a new visitor after the collection #}
 {% block _reservation_persons_widget %}
 
     <hr class="my-5">
@@ -42,6 +46,7 @@
 
 {% endblock %}
 
+{# generating the code of the persons (each element of the collection) which is mainly a delete button #}
 {% block _reservation_persons_entry_row %}
     <div class="form-group" id="block_{{id}}">
         <hr class="my-5" id="hr_{{id}}">
@@ -52,6 +57,7 @@
     </div>
 {% endblock %}
 
+{# handling the add and delete buttons #}
 {% block javascripts %}
 
     <script src="/js/addPerson.js"></script>
