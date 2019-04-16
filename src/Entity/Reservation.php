@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
  * @ORM\HasLifecycleCallbacks
  * @ReservationAssert\Afternoon
+ * @ReservationAssert\ThousandOrLess
  */
 class Reservation
 {
@@ -46,7 +47,6 @@ class Reservation
      *      "+5 years",
      *      message = "Nous ne prévoyons pas de visites plus de 5 ans à l'avance, merci de modifier votre date de visite."
      * )
-     * @ReservationAssert\ThousandOrLess
      * @ReservationAssert\ForbiddenDays
      * // créer custom validator ici et créer datetime pour heure actuelle, si jour visite = jour actuel vérif heure
      * 
@@ -250,32 +250,6 @@ class Reservation
         }
 
         return $price;
-    }
-
-    /**
-     * @return Collection|Person[]
-     */
-    public function getTemporaryPersonsList(): Collection
-    {
-        return $this->temporaryPersonsList;
-    }
-
-    public function addTemporaryPersonsList(Person $temporaryPersonsList): self
-    {
-        if (!$this->temporaryPersonsList->contains($temporaryPersonsList)) {
-            $this->temporaryPersonsList[] = $temporaryPersonsList;
-        }
-
-        return $this;
-    }
-
-    public function removeTemporaryPersonsList(Person $temporaryPersonsList): self
-    {
-        if ($this->temporaryPersonsList->contains($temporaryPersonsList)) {
-            $this->temporaryPersonsList->removeElement($temporaryPersonsList);
-        }
-
-        return $this;
     }
 
     public function getDateBookingWereMade(): ?\DateTimeInterface

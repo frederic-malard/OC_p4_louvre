@@ -15,6 +15,8 @@ class ThousandOrLessValidator extends ConstraintValidator
 {
     private $em;
 
+    const LOUVRE_CAPACITY = 1000;
+
     private function getReservationRepository()
     {
         return $this->getDoctrine()->getRepository(Reservation::class);
@@ -37,7 +39,8 @@ class ThousandOrLessValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->em->getRepository(Reservation::class)->countVisitorsOnDate($value) >= 1000) {
+        if ($this->em->getRepository(Reservation::class)->countVisitorsOnDate($value->getVisitDay()) > Self::LOUVRE_CAPACITY - count($value->getPersons()))
+        {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }
