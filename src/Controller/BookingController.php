@@ -30,7 +30,7 @@ class BookingController extends AbstractController
      * 
      * @Route("/reservation/nouvelle", name="booking_filling_form")
      */
-    public function index(Request $request, ObjectManager $manager)
+    public function index(Request $request)
     {
         // create the new reservation with the mail used at the homepage
         $mail = $this->get('session')->get('mail');

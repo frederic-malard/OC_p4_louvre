@@ -28,15 +28,6 @@ class ReservationTest extends TestCase
         $reservation->setMail($mail);
         $this->assertNotEquals($mail, $reservation->getMail());
     }
-
-    /* delete ? Future dates accepted only if the day is accepted also by the following functions... Complicated and useless
-    public function testVisitDayInFutureAccepted()
-    {
-        $day = new \DateTime(date('d/m/Y', strtotime("+2 month")));
-        $reservation = new Reservation();
-        $reservation->setVisitDay($day);
-        $this->assertGreaterThan(new \DateTime(), $reservation->getVisitDay());
-    }*/
     
     public function testVisitDayInPastRefused()
     {
@@ -102,9 +93,4 @@ class ReservationTest extends TestCase
             $this->assertNull($reservation->getVisitDay());
         }
     }
-
-    /*public function testMoreThanThousandRefused()
-    {
-
-    }*/
 }
