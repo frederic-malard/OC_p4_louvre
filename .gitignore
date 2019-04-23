@@ -31,3 +31,9 @@ yarn-error.log
 .DS_Store
 public/.DS_Store
 diapos.odp
+customerPresentation.odt
+var
+package.json
+phpunit.xml.dist
+symfony.lock
+webpack.config.js
