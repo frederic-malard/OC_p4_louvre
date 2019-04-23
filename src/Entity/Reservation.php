@@ -143,7 +143,10 @@ class Reservation
 
     public function setVisitDay(\DateTimeInterface $visitDay): self
     {
-        $this->visitDay = $visitDay;
+        if (strtotime($visitDay->format('d-m-Y')) >= strtotime('today midnight'))
+            $this->visitDay = $visitDay;
+        else
+            $this->visitDay = null;
 
         return $this;
     }

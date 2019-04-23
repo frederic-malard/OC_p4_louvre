@@ -4,7 +4,7 @@ use App\Entity\Person;
 use App\Entity\Reservation;
 use PHPUnit\Framework\TestCase;
 
-class ReservationTest extends TestCase
+class PersonTest extends TestCase
 {
     public function testPrices()
     {
