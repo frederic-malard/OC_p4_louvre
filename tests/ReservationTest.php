@@ -34,6 +34,6 @@ class ReservationTest extends TestCase
         $day = new \DateTime(date('Y-m-d', strtotime("-2 month")));
         $reservation = new Reservation();
         $reservation->setVisitDay($day);
-        $this->assertNull($reservation->getVisitDay());
+        $this->assertEquals($reservation->getVisitDay(), new \DateTime('0000-00-00'));
     }
 }

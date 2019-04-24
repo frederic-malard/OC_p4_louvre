@@ -146,7 +146,7 @@ class Reservation
         if (strtotime($visitDay->format('d-m-Y')) >= strtotime('today midnight'))
             $this->visitDay = $visitDay;
         else
-            $this->visitDay = null;
+            $this->visitDay = new \DateTime('0000-00-00');
 
         return $this;
     }
