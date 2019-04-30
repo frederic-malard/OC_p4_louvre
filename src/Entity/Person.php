@@ -186,16 +186,16 @@ class Person
     public function priceFullDay()
     {
         $age = $this->age();
-        if ($age < 4)
-            return 0;
-        elseif ($age < 12)
-            return 8;
+        if ($age < getenv('ageChild'))
+            return getenv('priceBaby');
+        elseif ($age < getenv('ageTeenager'))
+            return getenv('priceChild');
         elseif ($this->discount)
-            return 10;
-        elseif ($age >= 60)
-            return 12;
+            return getenv('priceDiscount');
+        elseif ($age >= getenv('ageOld'))
+            return getenv('priceOld');
         else
-            return 16;
+            return getenv('priceOld');
     }
 
     public function priceHalfDay()

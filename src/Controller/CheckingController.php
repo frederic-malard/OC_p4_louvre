@@ -24,7 +24,7 @@ class CheckingController extends AbstractController
     {
         $mail = $this->get('session')->get('mail');
 
-        $reservations = $repository->findBy(['mail' => $mail]);
+        $reservations = $repository->getReservationsFromMail($mail);
 
         return $this->render('checking/index.html.twig', [
             'reservations' => $reservations

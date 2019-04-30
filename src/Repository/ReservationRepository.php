@@ -21,7 +21,7 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function getReservationsFromMail($mail)
     {
-        $query = $this->_em->createQuery("SELECT r FROM App\Entity\Reservation r WHERE r.mail = :mail AND r.visitDay >= CURRENT_DATE() ORDER BY r.visitDay ASC");
+        $query = $this->_em->createQuery("SELECT r FROM App\Entity\Reservation r WHERE r.mail = :mail AND r.visitDay >= DATE_ADD(CURRENT_DATE(), (-1), 'day') ORDER BY r.visitDay ASC");
         $query->setParameter('mail', $mail);
 
         return $query->getResult();

@@ -28,7 +28,7 @@ class Holidays
             mktime(0, 0, 0, 12, 25, $year),// Noel
 
             // Jour feries qui dependent de paques
-            mktime(0, 0, 0, $easterMonth, $easterDay + 1, $easterYear),// Lundi de paques
+            mktime(0, 0, 0, $easterMonth, $easterDay + 1, $easterYear),// Lundi de paques, lendemain du dimanche de paques
             mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),// Ascension
             mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear), // Pentecote
         );

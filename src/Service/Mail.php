@@ -71,11 +71,7 @@ class Mail
             ->setFrom('testsDivers2@gmail.com')
             ->setTo($this->mail)
             ->setCharset('UTF-8')
-            //->attach(\Swift_Attachment::fromPath('/image/musee.jpg', 'image/jpeg'))
             ->setBody($this->messageText, 'text/plain');
-            //->embed(\Swift_Image::fromPath('/image/musee.jpg'));
-            //->addPart($messageHtml, 'text/html');
-            //->addPart($this->renderView(page twig avec le corps du message));
     }
 
     private function addTickets()
