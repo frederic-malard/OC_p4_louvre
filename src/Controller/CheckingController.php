@@ -7,6 +7,7 @@
 namespace App\Controller;
 
 use App\Service\Mail;
+use App\Service\Prices;
 use App\Entity\Reservation;
 use App\Repository\ReservationRepository;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,11 +39,14 @@ class CheckingController extends AbstractController
      */
     public function show(Reservation $reservation)
     {
+        $priceService = new Prices();
+
         $mail = $this->get('session')->get('mail');
 
         return $this->render("checking/show.html.twig", [
             'reservation' => $reservation,
-            'mail' => $mail
+            'mail' => $mail,
+            'priceService' => $priceService
         ]);
     }
 

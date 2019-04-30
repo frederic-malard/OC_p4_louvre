@@ -22,10 +22,10 @@
                     mail utilisé pour la réservation : {{ reservation.mail }} <br>
                     {% if reservation.halfDay %}
                         demi-journée <br>
-                        tarif : {{ person.pricehalfDay()}}€<br>
+                        tarif : {{ priceHalfDay }}€<br>
                     {% else %}
                         journée entière <br>
-                        tarif : {{ person.priceFullDay()}}€<br>
+                        tarif : {{ priceFullDay }}€<br>
                     {% endif %}
                     code de réservation : {{ reservation.getBookingCode() }}
                 </p>

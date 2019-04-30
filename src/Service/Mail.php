@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Dompdf\Dompdf;
+use App\Service\Prices;
 use App\Entity\Reservation;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -29,6 +30,8 @@ class Mail
 
     private function createContent()
     {
+        $priceService = new Prices();
+
         $this->mailSubject = 'Votre réservation pour le musée du Louvre';
 
         if (preg_match("#(hotmail|live|msn)\.[a-zA-Z]{2,6}$#", $this->mail))
@@ -44,7 +47,7 @@ class Mail
         else
             $message[] = 'Vous pouvez venir à l\'heure que vous désirez.';
         $message[] = 'Votre numéro de réservation est le' . $this->reservation->getBookingCode();
-        $message[] = 'coût total de la réservation : ' . $this->reservation->price() . '€';
+        $message[] = 'coût total de la réservation : ' . $priceService->price($this->reservation) . '€';
         $message[] = 'Chaque visiteur devra présenter son billet, joint à ce présent mail, au format pdf, imprimable.';
         $message[] = 'Une pièce d\'identité, ainsi qu\'un justificatif pour une éventuelle réduction, sera aussi demandée à chaque visiteur.';
 
@@ -76,17 +79,21 @@ class Mail
 
     private function addTickets()
     {
+        $priceService = new Prices();
         $i = 0;
+        
         foreach ($this->reservation->getPersons() as $person)
         {
-            /*$package = new Package(new EmptyVersionStrategy());
-            $picture = $package->getUrl('/image/musee.jpg');*/
+            $priceFull = $priceService->priceFullDay($person);
+            $priceHalf = $priceService->priceHalfDay($person);
 
             $pdfFile = new Dompdf();
             $pdfFile->load_html($this->templating->render('mail/ticket.html.twig', [
                 'person' => $person,
                 'reservation' => $this->reservation,
-                'imagePath' => getenv('PUBLIC_HOST')
+                'imagePath' => getenv('PUBLIC_HOST'),
+                'priceFullDay' => $priceFull,
+                'priceHalfDay' => $priceHalf
             ]));
             $pdfFile->setPaper('A4', 'portrait');
             $pdfFile->render();

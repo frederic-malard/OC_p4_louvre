@@ -9,6 +9,7 @@ namespace App\Controller;
 use Stripe\Stripe;
 use App\Service\Mail;
 use App\Entity\Person;
+use App\Service\Prices;
 use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\PersonRepository;
@@ -30,7 +31,7 @@ class BookingController extends AbstractController
      * 
      * @Route("/reservation/nouvelle", name="booking_filling_form")
      */
-    public function index(Request $request)
+    public function index(Request $request, Prices $priceService)
     {
         // create the new reservation with the mail used at the homepage
         $mail = $this->get('session')->get('mail');
@@ -47,7 +48,7 @@ class BookingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {
             $this->get('session')->set('reservation', $request->request->get('reservation'));
-            $this->get('session')->set('price', $reservation->price());
+            $this->get('session')->set('price', $priceService->price($reservation));
 
             return $this->redirectToRoute("payment");
         }

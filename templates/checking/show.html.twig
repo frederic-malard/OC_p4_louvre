@@ -63,9 +63,9 @@
             </th>
             <td>
                 {% if reservation.halfDay %}
-                    {{ person.priceHalfDay() }}
+                    {{ priceService.priceHalfDay(person) }}
                 {% else %}
-                    {{ person.priceFullDay() }}
+                    {{ priceService.priceFullDay(person) }}
                 {% endif %}
             </td>
         </tr>

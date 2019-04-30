@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -179,29 +178,8 @@ class Person
         return $this;
     }
 
-    private function age()
+    public function age()
     {
         return $this->birthDate->diff(new \DateTime())->format('%Y');
-    }
-
-    public function priceFullDay()
-    {
-        $age = $this->age();
-        $parameters = Yaml::parseFile('../config/parameters.yaml');
-        if ($age < $parameters['ageChild'])
-            return $parameters['priceBaby'];
-        elseif ($age < $parameters['ageTeenager'])
-            return $parameters['priceChild'];
-        elseif ($this->discount)
-            return $parameters['priceDiscount'];
-        elseif ($age >= $parameters['ageOld'])
-            return $parameters['priceOld'];
-        else
-            return $parameters['priceDefault'];
-    }
-
-    public function priceHalfDay()
-    {
-        return $this->priceFullDay() / 2;
     }
 }
