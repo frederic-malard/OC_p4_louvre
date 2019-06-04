@@ -8,18 +8,25 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{{ path('home') }}">
                     Choix du mail
                 </a>
             </li>
             {% if not index is defined %}
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="{{ path('menu') }}">
                         Menu
                     </a>
                 </li>
             {% endif %}
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a href="http://frederic-malard.com" class="nav-link">
+                    retour sur mon portfolio
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
