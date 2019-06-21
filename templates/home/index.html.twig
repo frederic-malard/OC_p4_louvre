@@ -4,6 +4,12 @@
 
 {% block body %}
 
+<p class="text-muted">
+    Bienvenue sur le site de réservation du musée du Louvre. Pour entamer une réservation, ou pour consulter vos précédentes réservations, veuillez indiquer votre e-mail.
+</p>
+
+<hr class="my-4">
+
 <h1 class="h3 mb-5">
     Votre e-mail
 </h1>
@@ -14,9 +20,9 @@
     <input type="submit" value="Validez votre mail" class="btn btn-primary mt-4">
 </form>
 
-{# transformer en simple bulle d'info si le visiteur clique sur un petit "i" ? #}
+{# transformer en simple bulle d'info si le visiteur clique sur un petit "i" ?
 <p class="alert alert-info mt-5">
     Pourquoi demander votre e-mail ? Afin de préremplir vos nouvelles réservations et de retrouver vos précédentes si elles existent, ou de préparer votre première réservation dans le cas contraire, merci d'entrer votre mail.
-</p>
+</p>#}
 
 {% endblock %}
